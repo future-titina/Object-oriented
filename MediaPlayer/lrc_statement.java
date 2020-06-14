@@ -3,8 +3,8 @@ package javafx;
 
 public class lrc_statement {
  
-    private long time = 0;//时间, 单位为10ms
-    private String lyric = "";//歌词
+    private long time = 0;
+    private String lyric = "";//赂猫麓脢
  
     public long getTime() {
 	return time;
