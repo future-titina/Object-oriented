@@ -7,19 +7,11 @@ import java.util.*;
  
 public class GetFilename {
  
-    public static void main(String[] arges) {
-    	String path = "http://39.106.192.149/musicplayer/names.txt"; // ¸èÇúÃûÎÄ¼şÂ·¾¶
- 
-    	List<String> list = GetNames(path);
-    	for(String string : list)
-    		System.out.println(string);
-    }
-    
     public static List<String> GetNames(String path) {
-        // ´æ´¢ËùÓĞ¸è´ÊĞÅÏ¢µÄÈİÆ÷ 	
+        // å­˜å‚¨æ‰€æœ‰æ­Œè¯ä¿¡æ¯çš„å®¹å™¨ 	
         List<String> list = new ArrayList<String>();
         try {
-            //String encoding = "utf-8"; // ×Ö·û±àÂë£¬ÈôÓë¸è´ÊÎÄ¼ş±àÂë²»·û½«»á³öÏÖÂÒÂë
+            //String encoding = "utf-8"; // å­—ç¬¦ç¼–ç ï¼Œè‹¥ä¸æ­Œè¯æ–‡ä»¶ç¼–ç ä¸ç¬¦å°†ä¼šå‡ºç°ä¹±ç 
             String encoding = "GBK";
             
             URL url = new URL(path);
@@ -27,7 +19,7 @@ public class GetFilename {
             InputStreamReader read = new InputStreamReader(connection.getInputStream(), encoding);
             BufferedReader bufferedReader = new BufferedReader(read);
             
-            String lineStr = null; // Ã¿´Î¶ÁÈ¡Ò»ĞĞ×Ö·û´®
+            String lineStr = null; // æ¯æ¬¡è¯»å–ä¸€è¡Œå­—ç¬¦ä¸²
             while ((lineStr = bufferedReader.readLine()) != null) {
                list.add(lineStr);
             }
@@ -36,7 +28,7 @@ public class GetFilename {
             
             return list;
         } catch (Exception e) {
-            System.out.println("¶ÁÈ¡ÎÄ¼ş³ö´í!");
+            System.out.println("è¯»å–æ–‡ä»¶å‡ºé”™!");
             e.printStackTrace();
         }
         return null;
