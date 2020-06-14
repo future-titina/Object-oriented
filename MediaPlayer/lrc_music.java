@@ -15,107 +15,69 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class lrc_music {
-
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String path1 = "http://39.106.192.149/musicplayer/ÖÜ±Ê³© - Ë­¶¯ÁËÎÒµÄÇÙÏÒ.lrc"; // ¸è´ÊÎÄ¼şÂ·¾¶
-//        int index = path1.indexOf("musicplayer/")+12;
-//        String result = path1.substring(0,index);
-//        String temp = path1.substring(index);
-//        String path =  result + URLEncoder.encode(temp, "utf-8").replace("+", "%20");
-//        System.out.println(path1.charAt(index));
-        lrc_music lrc = new lrc_music();
-        List<Map<Long, String>> list = lrc.parse(path1);
-        lrc.printLrc(list);
-    }
-    
+  
     public static List<Map<Long, String>> parse(String path) {
-        // ´æ´¢ËùÓĞ¸è´ÊĞÅÏ¢µÄÈİÆ÷ 	
         List<Map<Long, String>> list = new ArrayList<Map<Long, String>>();
         try {
-            //String encoding = "utf-8"; // ×Ö·û±àÂë£¬ÈôÓë¸è´ÊÎÄ¼ş±àÂë²»·û½«»á³öÏÖÂÒÂë
             String encoding = "GBK";
-//            File file = new File(path);
             
             URL url = new URL(path);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
- //           BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
             InputStreamReader read = new InputStreamReader(connection.getInputStream(), encoding);
             BufferedReader bufferedReader = new BufferedReader(read);
-            
-//            if (file.isFile() && file.exists()) { // ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ
             if (true) {
-//                InputStreamReader read = new InputStreamReader(new FileInputStream(file), encoding);
-//                BufferedReader bufferedReader = new BufferedReader(read);
-                String regex = "\\[(\\d{1,2}):(\\d{1,2}).(\\d{1,2})\\]"; // ÕıÔò±í´ïÊ½
-                Pattern pattern = Pattern.compile(regex); // ´´½¨ Pattern ¶ÔÏó
-                String lineStr = null; // Ã¿´Î¶ÁÈ¡Ò»ĞĞ×Ö·û´®
+                String regex = "\\[(\\d{1,2}):(\\d{1,2}).(\\d{1,2})\\]"; // æ­£åˆ™è¡¨è¾¾å¼
+                Pattern pattern = Pattern.compile(regex); // åˆ›å»º Pattern å¯¹è±¡
+                String lineStr = null; // æ¯æ¬¡è¯»å–ä¸€è¡Œå­—ç¬¦ä¸²
                 while ((lineStr = bufferedReader.readLine()) != null) {
                     Matcher matcher = pattern.matcher(lineStr);
                     while (matcher.find()) {
-                        // ÓÃÓÚ´æ´¢µ±Ç°Ê±¼äºÍÎÄ×ÖĞÅÏ¢µÄÈİÆ÷
                         Map<Long, String> map = new HashMap<Long, String>();
-                        // System.out.println(m.group(0)); // Àı£º[02:34.94]
-                        // [02:34.94] ----¶ÔÓ¦---> [·ÖÖÓ:Ãë.ºÁÃë]
-                        String min = matcher.group(1); // ·ÖÖÓ
-                        String sec = matcher.group(2); // Ãë
-                        String mill = matcher.group(3); // ºÁÃë£¬×¢ÒâÕâÀïÆäÊµ»¹Òª³ËÒÔ10
+                        String min = matcher.group(1); // åˆ†é’Ÿ
+                        String sec = matcher.group(2); // ç§’
+                        String mill = matcher.group(3); // æ¯«ç§’ï¼Œæ³¨æ„è¿™é‡Œå…¶å®è¿˜è¦ä¹˜ä»¥10
                         long time = getLongTime(min, sec, mill + "0");
-                        // »ñÈ¡µ±Ç°Ê±¼äµÄ¸è´ÊĞÅÏ¢
+                        // è·å–å½“å‰æ—¶é—´çš„æ­Œè¯ä¿¡æ¯
                         String text = lineStr.substring(matcher.end());
-                        map.put(time, text); // Ìí¼Óµ½ÈİÆ÷ÖĞ
+                        map.put(time, text); // æ·»åŠ åˆ°å®¹å™¨ä¸­
                         list.add(map);
                     }
                 }
-                read.close();
- //               in.close();
+                read.close
                 return list;
-            } 
-//            else {
-//                System.out.println("ÕÒ²»µ½Ö¸¶¨µÄÎÄ¼ş:" + path);
-//            }
+            }
         } catch (Exception e) {
-            System.out.println("¶ÁÈ¡ÎÄ¼ş³ö´í!");
+            System.out.println("è¯»å–æ–‡ä»¶å‡ºé”™!");
             e.printStackTrace();
         }
         return null;
     }
 
-    /**
-     * ½«ÒÔ×Ö·û´®ĞÎÊ½¸ø¶¨µÄ·ÖÖÓ¡¢ÃëÖÓ¡¢ºÁÃë×ª»»³ÉÒ»¸öÒÔºÁÃëÎªµ¥Î»µÄlongĞÍÊı
-     * 
-     * @param min
-     *            ·ÖÖÓ
-     * @param sec
-     *            ÃëÖÓ
-     * @param mill
-     *            ºÁÃë
-     * @return
-     */
+    //å°†ä»¥å­—ç¬¦ä¸²å½¢å¼ç»™å®šçš„åˆ†é’Ÿã€ç§’é’Ÿã€æ¯«ç§’è½¬æ¢æˆä¸€ä¸ªä»¥æ¯«ç§’ä¸ºå•ä½çš„longå‹æ•°
+    
     private static long getLongTime(String min, String sec, String mill) {
-        // ×ª³ÉÕûĞÍ
+        // è½¬æˆæ•´å‹
         int m = Integer.parseInt(min);
         int s = Integer.parseInt(sec);
         int ms = Integer.parseInt(mill);
 
         if (s >= 60) {
-            System.out.println("¾¯¸æ: ³öÏÖÁËÒ»¸öÊ±¼ä²»ÕıÈ·µÄÏî --> [" + min + ":" + sec + "."
+            System.out.println("è­¦å‘Š: å‡ºç°äº†ä¸€ä¸ªæ—¶é—´ä¸æ­£ç¡®çš„é¡¹ --> [" + min + ":" + sec + "."
                     + mill.substring(0, 2) + "]");
         }
-        // ×éºÏ³ÉÒ»¸ö³¤ÕûĞÍ±íÊ¾µÄÒÔºÁÃëÎªµ¥Î»µÄÊ±¼ä
+        // ç»„åˆæˆä¸€ä¸ªé•¿æ•´å‹è¡¨ç¤ºçš„ä»¥æ¯«ç§’ä¸ºå•ä½çš„æ—¶é—´
         long time = m * 60 * 1000 + s * 1000 + ms;
         return time;
     }
 
-    /**
-     * ´òÓ¡¸è´ÊĞÅÏ¢
-     */
+    //æ‰“å°æ­Œè¯ä¿¡æ¯
     private void printLrc(List<Map<Long, String>> list) {
         if (list == null || list.isEmpty()) {
-            System.out.println("Ã»ÓĞÈÎºÎ¸è´ÊĞÅÏ¢£¡");
+            System.out.println("æ²¡æœ‰ä»»ä½•æ­Œè¯ä¿¡æ¯ï¼");
         } else {
             for (Map<Long, String> map : list) {
                 for (Entry<Long, String> entry : map.entrySet()) {
-                    System.out.println("Ê±¼ä:" + entry.getKey() + "  \t¸è´Ê:"
+                    System.out.println("æ—¶é—´:" + entry.getKey() + "  \tæ­Œè¯:"
                             + entry.getValue());
                 }
             }
