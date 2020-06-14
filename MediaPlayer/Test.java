@@ -554,7 +554,7 @@ public class Test extends Application{
 			str_name = str_name.replace("+", "%20");
 			str_title = str_title.replace("+", "%20");
 			
-			mp2 = new MediaPlayer(new Media("http://39.106.192.149/musicplayer/mv/"+str_name+"%20-%20"+str_title+".mp4"));
+			mp2 = new MediaPlayer(new Media("*"+str_name+"%20-%20"+str_title+".mp4"));
 			mv = new MediaView(mp2);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -711,7 +711,7 @@ public class Test extends Application{
 					str_name = str_name.replace("+", "%20");
 					str_title = str_title.replace("+", "%20");
 					
-					list_lrc = lrc_music.parse(("http://39.106.192.149/musicplayer/"+str_name+"%20-%20"+str_title+".lrc"));
+					list_lrc = lrc_music.parse(("*"+str_name+"%20-%20"+str_title+".lrc"));
 					//vBox2.getChildren().clear();
 					list_ls.clear();
 					for (Map<Long, String> map2 : list_lrc) {
